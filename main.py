@@ -335,8 +335,8 @@ def manual_check(update: Update, context: CallbackContext):
     update.message.reply_text("Проверка просроченных лекарств завершена.")
 
 def main():
-    # Telegram bot
     TOKEN = "8030082684:AAHZXl3DJsn5MMambFnCYKIDcfKONDxppzA"
+
     updater = Updater(TOKEN)
     dp = updater.dispatcher
 
@@ -355,28 +355,11 @@ def main():
     scheduler.add_job(check_expired, 'cron', hour=9, minute=0, args=(updater.bot,))
     scheduler.start()
 
-    # ❗️Запускаем бота в ГЛАВНОМ потоке, чтобы программа не завершалась
     updater.start_polling()
     updater.idle()
 
 if __name__ == "__main__":
     main()
-# Добавление сервера проверки активности Flask для Render
 
-from flask import Flask
-from threading import Thread
-import os
-
-app = Flask(__name__)
-
-@app.route('/')
-def home():
-    return "I'm alive!"
-
-def run():
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
-
-Thread(target=run).start()
 
 
