@@ -1,5 +1,4 @@
 python-telegram-bot==13.15
-apscheduler
+APScheduler==3.6.3
 pytz
-telegram
 flask
