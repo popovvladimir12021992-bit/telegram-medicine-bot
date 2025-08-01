@@ -351,6 +351,25 @@ def main():
     dp.add_handler(CommandHandler("symptom", search_by_symptom))
     dp.add_handler(CommandHandler("check", manual_check))
 
+from flask import Flask
+from threading import Thread
+import os
+from apscheduler.schedulers.background import BackgroundScheduler
+import pytz
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "I'm alive!"
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+def main():
+    # ... твоя логика и инициализация бота
+
     scheduler = BackgroundScheduler(timezone=pytz.timezone("Europe/Moscow"))
     scheduler.add_job(check_expired, 'cron', hour=9, minute=0, args=(updater.bot,))
     scheduler.start()
@@ -358,8 +377,12 @@ def main():
     updater.start_polling()
     updater.idle()
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    Thread(target=run_flask).start()
     main()
+
+
+
 
 
 
